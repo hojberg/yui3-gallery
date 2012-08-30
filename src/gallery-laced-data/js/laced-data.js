@@ -54,7 +54,7 @@ LacedData.prototype = {
   extractLacedData: function (options, callback) {
     var data = this.lacedSource;
 
-    // allow callback as only arg.
+    // allow callback as only arg
     if (isFunction(options)) {
       callback = options;
     }
@@ -68,7 +68,7 @@ LacedData.prototype = {
       this.setAttrs(data);
     }
 
-    // displacing `load` means taking on it's
+    // displacing `load` means taking on its'
     // promise of invoking the callback if passed 
     if (callback) {
       callback.apply(null, arguments);
