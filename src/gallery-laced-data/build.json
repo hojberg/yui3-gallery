@@ -1,0 +1,10 @@
+{
+    "name": "gallery-laced-data",
+    "builds": {
+        "gallery-laced-data": {
+            "jsfiles": [
+                "laced-data.js"
+            ]
+        }
+    }
+}
