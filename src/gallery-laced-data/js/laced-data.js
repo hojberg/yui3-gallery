@@ -55,8 +55,7 @@ LacedData.prototype = {
       callback = options;
     }
 
-    if (forModelList) this.reset(data);
-    else              this.setAttrs(data);
+    forModelList ? this.reset(data) : this.setAttrs(data);
 
     callback && callback.apply(null, arguments);
 
