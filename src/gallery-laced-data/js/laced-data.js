@@ -35,9 +35,14 @@ LacedData.prototype = {
 
       // parse as JSON if the laced source is a string
       if (isString(lacedSource)) {
-        this.lacedSource = Y.JSON.parse(lacedSource);
+        lacedSource = Y.JSON.parse(lacedSource);
+        this.lacedSource = lacedSource;
       }
+      
+      // cache modelList check
+      this._forModelList = this._isYUIModelList && isArray(lacedSource);
 
+      // displace `load`
       Y.Do.before(this.extractLacedData, this, 'load', this);
     }
   },
@@ -47,20 +52,31 @@ LacedData.prototype = {
   @description initializes itself from laced data
   **/
   extractLacedData: function (options, callback) {
-    var data = this.lacedSource,
-        forModelList = this._isYUIModelList && isArray(data);
+    var data = this.lacedSource;
 
-    // Allow callback as only arg.
+    // allow callback as only arg.
     if (isFunction(options)) {
       callback = options;
     }
 
-    forModelList ? this.reset(data) : this.setAttrs(data);
+    // use the laced data correctly
+    // for either modelList or model
+    if (this._forModelList) {
+      this.reset(data);
+    }
+    else {
+      this.setAttrs(data);
+    }
 
-    callback && callback.apply(null, arguments);
+    // displacing `load` means taking on it's
+    // promise of invoking the callback if passed 
+    if (callback) {
+      callback.apply(null, arguments);
+    }
 
     this.fire('load');
 
+    // don't allow `load` to be called
     Y.Do.Prevent('laced');
   }
 

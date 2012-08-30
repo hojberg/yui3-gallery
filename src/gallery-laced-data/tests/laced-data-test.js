@@ -7,8 +7,16 @@ YUI.add('laced-data-test', function (Y) {
       Pie, 
       PieList;
 
+  // every tearDown is doing the same
+  var _tearDown = function () {
+    delete this.Pie;
+    delete this.PieList;
+    delete this.model;
+    delete this.modelList;
+  };
+
   suite.add(new Y.Test.Case({
-    name: 'with no `lacedSource` set',
+    name: 'properties: with no `lacedSource` set',
 
     setUp: function () {
       this.Pie     = Y.Base.create('Pie', Y.Model, [Y.LacedData]);
@@ -21,12 +29,7 @@ YUI.add('laced-data-test', function (Y) {
       this.modelList = new this.PieList();
     },
 
-    tearDown: function () {
-      delete this.Pie;
-      delete this.PieList;
-      delete this.model;
-      delete this.modelList;
-    },
+    tearDown: function () { _tearDown.call(this); },
 
     'it defaults null': function () {
       Assert.areEqual( this.model.lacedSource, null );
@@ -35,7 +38,7 @@ YUI.add('laced-data-test', function (Y) {
   }));
   
   suite.add(new Y.Test.Case({
-    name: 'with `lacedSource` set to a string',
+    name: 'properties: with `lacedSource` set to a string',
 
     setUp: function () {
       this.Pie = Y.Base.create('Pie', Y.Model, [Y.LacedData], {
@@ -51,12 +54,7 @@ YUI.add('laced-data-test', function (Y) {
       this.modelList = new this.PieList();
     },
 
-    tearDown: function () {
-      delete this.Pie;
-      delete this.PieList;
-      delete this.model;
-      delete this.modelList;
-    },
+    tearDown: function () { _tearDown.call(this); },
 
     "it's parsed as JSON": function () {
       OAssert.areEqual( this.model.lacedSource, { type: 'apple' });
@@ -70,7 +68,7 @@ YUI.add('laced-data-test', function (Y) {
   }));
 
   suite.add(new Y.Test.Case({
-    name: 'load',
+    name: 'displaced load',
 
     setUp: function () {
 
@@ -97,12 +95,7 @@ YUI.add('laced-data-test', function (Y) {
       this.modelList = new this.PieList();
     },
 
-    tearDown: function () {
-      delete this.Pie;
-      delete this.PieList;
-      delete this.model;
-      delete this.modelList;
-    },
+    tearDown: function () { _tearDown.call(this); },
 
     'it calls `extractLacedData` before calling load' : function () {
       this.model.load();
@@ -140,12 +133,7 @@ YUI.add('laced-data-test', function (Y) {
       this.modelList = new this.PieList();
     },
 
-    tearDown: function () {
-      delete this.Pie;
-      delete this.PieList;
-      delete this.model;
-      delete this.modelList;
-    },
+    tearDown: function () { _tearDown.call(this); },
 
     'it calls setAttrs on the model with the data': function () {
       var model = Y.Mock(this.model);
